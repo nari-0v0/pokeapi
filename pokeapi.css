@@ -99,3 +99,13 @@ body {
     border-radius: 30px;
     justify-content: center;
 }
+
+.but1:active{
+    transform: translateY(4px);
+    box-shadow: 0 0 0 #b38b00;
+}
+
+.but2:active{
+    transform: translateY(4px);
+    box-shadow: 0 0 0 #b38b00;
+}
