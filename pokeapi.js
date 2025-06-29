@@ -58,19 +58,33 @@ function loadEvolution() {
         .then(evoData => {
             const chain = evoData.chain;
             const evoList = [];
+            const evoDetails = new Map(); // 이름과 ID를 가져올 URL을 저장합니다.
 
             let current = chain;
             while (current) {
                 evoList.push(current.species.name);
+                evoDetails.set(current,species.name, current.species.url); //종별 URL 저장
                 current = current.evolves_to[0];
             }
 
             const currentName = stat.textContent.split('이름: ')[1]?.split('|')[0]?.trim();
-            const index = evoList.findIndex(name => currentName?.includes(name));
+            //현재 포켓몬 이름과 정확히 일치하는 인덱스를 찾는다
+            const index = evoList.findIndex(name => name.toLowerCase() === currentName?.toLowerCase());
             const nextEvo = evoList[index + 1];
 
             if (nextEvo) {
-                loadPokemon(nextEvo); // 이름으로 호출 가능!
+                const nextEvoUrl = evoDetails.get(nextEvo);
+                fetch(nextEvoUrl)
+                    .then(res => res.json())
+                    .then(data => {
+                        //종별 URL에서 가져온 ID를 loadPokemon에 전달
+                        const nextEvoId = data.id;
+                        loadPokemon(nextEvoId);
+                    })
+                    .catch(err => {
+                        console.error('다음 진화 포켓몬 정보 가져오기 실패:', err);
+                        text.textContent = '진화를 거부했어요';
+                    });
             } else {
                 text.textContent = '다 성장했어요!';
             }
