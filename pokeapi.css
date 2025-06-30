@@ -17,7 +17,6 @@ body {
     justify-content: center;
 }
 
-
 .screen {
     display: flex;
     position: relative;
@@ -28,18 +27,65 @@ body {
     justify-content: center;
 }
 
+.see {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid;
+    width: 290px;
+    height: 480px;
+    align-items: flex-end;
+    justify-content: center;
+}
+
+.gender {
+    display: flex;
+    
+}
+
+.male {
+    display: flex;
+    border: 1px solid;
+    border-radius: 50px 0px 0px 50px;
+    width: 50px;
+    height: 40px;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    background-color: lightgrey;
+}
+
+.male:active{
+    background-color: blue;
+}
+
+.female {
+    display: flex;
+    border: 1px solid;
+    border-radius: 0px 50px 50px 0;
+    width: 50px;
+    height: 40px;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    background-color: lightgrey;
+}
+
+.female:active{
+    background-color: pink;
+}
+
 .img {
     display: flex;
     border: 1px solid;
     width: 290px;
-    height: 480px;
+    height: 290px;
     align-items: center;
     justify-content: center;
 }
 
-.poke-img{
-    width: 300px;
-    height: 300px;
+.poke-img {
+    width: 290px;
+    height: 290px;
 }
 
 .stat {
@@ -51,7 +97,7 @@ body {
     justify-content: center;
 }
 
-.input{
+.input {
     display: flex;
     border: 1px solid;
     width: 600px;
@@ -70,7 +116,7 @@ body {
     justify-content: center;
 }
 
-.box{
+.box {
     display: flex;
     border: 1px solid;
     width: 100px;
@@ -80,7 +126,7 @@ body {
     flex-direction: column;
 }
 
-.but1{
+.but1 {
     display: flex;
     border: 1px solid;
     width: 100px;
@@ -88,9 +134,10 @@ body {
     align-items: center;
     border-radius: 30px;
     justify-content: center;
+    cursor: pointer;
 }
 
-.but2{
+.but2 {
     display: flex;
     border: 1px solid;
     width: 100px;
@@ -98,14 +145,15 @@ body {
     align-items: center;
     border-radius: 30px;
     justify-content: center;
+    cursor: pointer;
 }
 
-.but1:active{
+.but1:active {
     transform: translateY(4px);
     box-shadow: 0 0 0 #b38b00;
 }
 
-.but2:active{
+.but2:active {
     transform: translateY(4px);
     box-shadow: 0 0 0 #b38b00;
 }
