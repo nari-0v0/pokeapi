@@ -32,7 +32,7 @@ body {
     flex-direction: column;
     border: 1px solid;
     width: 290px;
-    height: 480px;
+    height: 500px;
     align-items: flex-end;
     justify-content: center;
 }
@@ -91,10 +91,12 @@ body {
 .stat {
     display: flex;
     border: 1px solid;
-    width: 290px;
-    height: 480px;
-    align-items: center;
-    justify-content: center;
+    width: 250px;
+    height: 440px;
+    align-items: flex-start;
+    justify-content: flex-start;
+    padding: 30px;
+    font-size: 30px;
 }
 
 .input {
