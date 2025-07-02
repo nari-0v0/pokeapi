@@ -27,7 +27,7 @@ function renderImage() {
             return; //조건을 만족하지않을땐 종료
         }
     } else {
-        if (sprites.front_default){ //남자 이미지 있으면 (false)
+        if (sprites.front_default) { //남자 이미지 있으면 (false)
             imageUrl = sprites.front_default; //이미지 가져오기
         } else {
             img.textContent = '남자 이미지가 없어요!'; // 남자 이미지 없을땐
@@ -84,59 +84,62 @@ function loadPokemon(id = Math.ceil(Math.random() * 1000)) { //랜덤 포켓몬 
 
 // 진화 포켓몬 불러오기
 function loadEvolution() {
-    if (!currentPokemonId) return;
+    if (!currentPokemonId) return; //id없으면 종료
 
-    const speciesUrl = `https://pokeapi.co/api/v2/pokemon-species/${currentPokemonId}`;
+    const speciesUrl = `https://pokeapi.co/api/v2/pokemon-species/${currentPokemonId}`; //진화정보url
 
     fetch(speciesUrl)
-        .then(res => res.json())
-        .then(speciesData => fetch(speciesData.evolution_chain.url))
-        .then(res => res.json())
+        .then(res => res.json()) //json으로 변환
+        .then(speciesData => fetch(speciesData.evolution_chain.url)) //진화정보안의 진화체인 요청
+        .then(res => res.json()) // json으로 변환
         .then(evoData => {
-            const chain = evoData.chain;
-            const evoList = [];
-            const evoDetails = new Map();
+            const chain = evoData.chain; //진화트리의 최상단 노드
+            const evoList = []; //진화 순서 저장 배열
+            const evoDetails = new Map(); // 이름과 url매핑
 
-            let current = chain;
-            while (current) {
-                const name = current.species.name;
-                const url = current.species.url; // 예: .../pokemon-species/25/
-                evoList.push(name);
-                evoDetails.set(name, url);
-                current = current.evolves_to[0];
+            let current = chain; //진화트리 순회 , chain>>가장 첫단계의 포켓몬 = 가장 첫 단계의 포켓몬으로 초기화
+            while (current) { // 진화노드가 존재하는동안 반복
+                const name = current.species.name; //현재단계의 포켓몬 이름 가져오기
+                const url = current.species.url; // 예: .../pokemon-species/25/ 포켓몬 종 url가져오기
+                evoList.push(name); // 진화 순서대로 이름을 배열에 저장, push : 배열 끝에 추가
+                evoDetails.set(name, url); // 이름 = 키, url= value로 하는 맵에 저장
+                current = current.evolves_to[0]; // 다음 진화단계로 넘어감 --
             }
 
-            const currentName = stat.textContent.split('이름: ')[1]?.split('|')[0]?.trim();
+            const currentName = stat.textContent.split('이름: ')[1]?.split('|')[0]?.trim(); //현재 포켓몬 이름 확인
             const index = evoList.findIndex(name => name.toLowerCase() === currentName?.toLowerCase());
-            const nextEvo = evoList[index + 1];
+            // findIndex : 몇번째 인덱스에 있는지 찾는 함수, toLowerCase : 대소문자 무시, 포켓몬 이름이 몇번째 인덱스에 있는지 확인 
+            const nextEvo = evoList[index + 1]; //현재 값에서 +1에 잇는 포켓몬이 진화대상
 
-            if (nextEvo) {
-                const nextEvoSpeciesUrl = evoDetails.get(nextEvo);
-                const nextEvoId = nextEvoSpeciesUrl.match(/\/(\d+)\/$/)?.[1];
+            if (nextEvo) { // 진화대상 포켓몬의 값이 true면
+                const nextEvoSpeciesUrl = evoDetails.get(nextEvo); //evoDetails : 이름과 url 매핑되어있는 맵에서 가져오기 진화된 포켓몬
+                const parts = nextEvoSpeciesUrl.split('/'); // /를 기준으로 문자열 잘라서 배열 만들기
+                const nextEvoId = parts[parts.length - 2];
+                // 맨뒤는 빈 문자열이므로 마지막에서 두번째 가져오기, /를 기준으로 잘랐기 때문에 /뒤에는 아무것도 없어서 빈문자열이 생김 
 
-                if (nextEvoId) {
-                    loadPokemon(nextEvoId);
-                } else {
+                if (nextEvoId) { // 진화할 포켓몬 id
+                    loadPokemon(nextEvoId); // 진화한 포켓몬 덮어쓰기
+                } else { // null, undefined 등 잘못될경우 표현텍스트
                     text.textContent = '진화 ID 추출 실패';
                 }
-            } else {
+            } else { // 진화가 불가능할 경우 표현 텍스트
                 text.textContent = '다 성장했어요!';
             }
         })
-        .catch(err => {
+        .catch(err => { //에러가 발생할 경우
             console.error('진화 정보 요청 실패:', err);
             text.textContent = '포켓몬이 진화하고 싶지 않은가봐요..';
         });
 }
 
 //성별버튼
-male.addEventListener('click', () => {
-    isFemale = false;
-    if (currentPokemonData) renderImage();
+male.addEventListener('click', () => { //남자 버튼을 클릭 했을때
+    isFemale = false; // 기본값 출력
+    if (currentPokemonData) renderImage(); //조건문 쓰는이유 : 이미지가 로딩 된 후 이미지 추출을 위해 (오류방지)
 });
 
-female.addEventListener('click', () => {
-    isFemale = true;
+female.addEventListener('click', () => { // 여자 버튼을 클릭했을대
+    isFemale = true; // 여자사진 출력
     if (currentPokemonData) renderImage();
 });
 
