@@ -68,7 +68,7 @@ function loadPokemon(id = Math.ceil(Math.random() * 1000)) { //랜덤 포켓몬 
 
             const statsText = data.stats //능력치 배열설정
                 .map(stat => `${statNameKorMap[stat.stat.name] || stat.stat.name} : ${stat.base_stat}`) // 스텟명 매칭 후 한글로 가져오고, 수치 불러오기
-                .join('<br> '); //스텟 사이사이에 쉼표
+                .join('<br> '); //스텟 사이사이에 줄바꿈
 
             stat.innerHTML = `번호: ${data.id} <br> 이름: ${data.name} <br> <br>[스텟] <br> ${statsText}`; // 표시될 방식
             text.textContent = `포켓몬 ${data.name}이(가) 나타났다!`;
@@ -106,7 +106,11 @@ function loadEvolution() {
                 current = current.evolves_to[0]; // 다음 진화단계로 넘어감 --
             }
 
-            const currentName = stat.textContent.split('이름: ')[1]?.split('|')[0]?.trim(); //현재 포켓몬 이름 확인
+            const currentName = stat.textContent.split('이름: ')[1]?.split('[')[0]?.trim(); 
+            //현재 포켓몬 이름 확인, .trim - 줄바꿈이나 공백 제거
+            // .split - 자르기 첫번째 split는 '이름:' 기준으로 두배열로 나눔 여기서 번호로 가져오기. (번호 :nn\n, 포켓몬이름\n\n [스텟]...)
+            // '?.'는 에러내지않고 undefined로 변환하기위해 쓰임 (ex/ undefined.split(...)로 나오면 js가 멈춤) 
+            // ㄴ 존재하지않는 결과는 undefined로 반환 있을땐 .split실행
             const index = evoList.findIndex(name => name.toLowerCase() === currentName?.toLowerCase());
             // findIndex : 몇번째 인덱스에 있는지 찾는 함수, toLowerCase : 대소문자 무시, 포켓몬 이름이 몇번째 인덱스에 있는지 확인 
             const nextEvo = evoList[index + 1]; //현재 값에서 +1에 잇는 포켓몬이 진화대상
