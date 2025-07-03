@@ -68,7 +68,7 @@ function loadPokemon(id = Math.ceil(Math.random() * 1000)) { //랜덤 포켓몬 
 
             const statsText = data.stats //능력치 배열설정
                 .map(stat => `${statNameKorMap[stat.stat.name] || stat.stat.name} : ${stat.base_stat}`) // 스텟명 매칭 후 한글로 가져오고, 수치 불러오기
-                .join('<br> '); //스텟 사이사이에 쉼표
+                .join('<br> '); //스텟 사이사이에 줄바꿈
 
             stat.innerHTML = `번호: ${data.id} <br> 이름: ${data.name} <br> <br>[스텟] <br> ${statsText}`; // 표시될 방식
             text.textContent = `포켓몬 ${data.name}이(가) 나타났다!`;
